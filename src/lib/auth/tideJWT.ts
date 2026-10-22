@@ -1,6 +1,8 @@
 import { jwtVerify, createLocalJWKSet } from "jose";
 import type { JWTPayload } from "jose";
 import { loadTideConfig } from "./tidecloakConfig";
+import { simJwks } from "./simTide";
+import { SIMULATE } from "../simulate";
 
 // Lazy initialization — do NOT load config at module level.
 // Next.js 16 evaluates module-level code during `next build` for static
@@ -17,7 +19,8 @@ function getConfig() {
         "Adapter JSON missing jwk field. Re-export with IGA enabled."
       );
     }
-    _jwks = createLocalJWKSet(_config.jwk);
+    // Simulation mode trusts the local stand-in realm key as well (see src/lib/simulate.ts).
+    _jwks = createLocalJWKSet(SIMULATE ? { keys: [..._config.jwk.keys, ...simJwks().keys] } : _config.jwk);
   }
   return { config: _config, JWKS: _jwks! };
 }

@@ -1,0 +1,9 @@
+{
+  "realm": "cungduyet",
+  "auth-server-url": "http://localhost:8080/",
+  "ssl-required": "external",
+  "resource": "cungduyet-client",
+  "public-client": true,
+  "confidential-port": 0,
+  "jwk": { "keys": [] }
+}

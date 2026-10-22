@@ -1,5 +1,6 @@
-import { readFileSync } from "fs";
+import { existsSync, readFileSync } from "fs";
 import { join } from "path";
+import { SIMULATE } from "../simulate";
 
 export interface TidecloakConfig {
   realm: string;
@@ -18,7 +19,9 @@ export function loadTideConfig(): TidecloakConfig {
     return JSON.parse(process.env.CLIENT_ADAPTER);
   }
 
-  const configPath = join(process.cwd(), "data", "tidecloak.json");
+  let configPath = join(process.cwd(), "data", "tidecloak.json");
+  // Simulation mode runs without a bootstrapped realm: fall back to the placeholder adapter.
+  if (SIMULATE && !existsSync(configPath)) configPath = join(process.cwd(), "data", "tidecloak.sim.json");
   const config = JSON.parse(readFileSync(configPath, "utf-8"));
 
   if (!config.jwk) {

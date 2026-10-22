@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --webpack",
+    "dev:sim": "node scripts/dev-sim.mjs",
     "build": "next build --webpack",
     "start": "next start",
     "init": "bash scripts/init-tidecloak.sh",

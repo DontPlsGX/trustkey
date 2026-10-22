@@ -1,4 +1,5 @@
 import path from "path";
+import { existsSync } from "fs";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -15,6 +16,10 @@ const nextConfig: NextConfig = {
         __dirname,
         "node_modules/@tidecloak/react/dist/esm/index.js"
       ),
+      // Adapter JSON exported by `npm run init`; the placeholder lets simulation mode run without it.
+      "@tide-adapter": existsSync(path.resolve(__dirname, "data/tidecloak.json"))
+        ? path.resolve(__dirname, "data/tidecloak.json")
+        : path.resolve(__dirname, "data/tidecloak.sim.json"),
     };
 
     return config;

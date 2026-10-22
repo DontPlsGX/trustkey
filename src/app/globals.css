@@ -175,6 +175,7 @@ input.code-input { font-family: var(--mono); font-size: 22px; letter-spacing: 0.
 .notice.err { background: var(--neg-bg); color: var(--neg-ink); }
 .notice.frozen { background: #e8eef6; color: #17304f; }
 .notice .btn { min-height: 40px; }
+.sim-strip { background: var(--raised); border-bottom: 1px solid var(--border); color: var(--muted); font-size: 13px; padding: 6px 0; }
 .inline-err { color: var(--neg-text); font-size: 15px; margin-top: 12px; }
 
 /* A transfer's verdict: a pale tint of its risk, dark ink, no border. */

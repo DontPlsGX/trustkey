@@ -3,7 +3,7 @@
 // Browser-side helpers. Every API call goes through the SDK's secureFetch: it swaps the managed
 // Bearer token for a DPoP proof signed by this device's non-extractable key, bound to the exact
 // method + URL. The server refuses plain Bearer, so a stolen token is useless on its own.
-import { useTideCloak } from "@tidecloak/nextjs";
+import { useTide } from "./tide";
 import { useCallback } from "react";
 
 export const TAG = "vault"; // realm default roles grant _tide_vault.selfencrypt / selfdecrypt
@@ -29,7 +29,7 @@ export const accountKey = (bank: string, account: string) => `${bank}:${account}
 export const fillR = (text: string, name?: string) => text.replaceAll("{R}", name ? `“${name}”` : "the recipient");
 
 export function useApi() {
-  const tc = useTideCloak();
+  const tc = useTide();
   const { token, secureFetch, doEncrypt, doDecrypt } = tc;
 
   const call = useCallback(

@@ -17,6 +17,7 @@ data/keycloakdb*
 .tide-pack/
 data/vault/
 data/app/
+data/sim-tide/
 
 # Build caches
 tsconfig.tsbuildinfo

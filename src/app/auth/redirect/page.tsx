@@ -2,6 +2,7 @@
 
 import { useAuthCallback } from "@tidecloak/nextjs";
 import { useEffect, useState } from "react";
+import { SIMULATE } from "@/lib/simulate";
 
 // Separated so useAuthCallback only runs after hydration (avoids SSR window error).
 function RedirectHandler() {
@@ -38,6 +39,9 @@ function RedirectHandler() {
 export default function AuthRedirectPage() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
+  // Simulation mode has no Tide callback; useAuthCallback needs the real provider.
+  useEffect(() => { if (SIMULATE) location.assign("/"); }, []);
+  if (SIMULATE) return <p>Redirecting...</p>;
   if (!mounted) return <p>Loading...</p>;
   return <RedirectHandler />;
 }

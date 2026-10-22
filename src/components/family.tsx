@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useApi } from "@/lib/client/api";
 import type { Assessment, Rules } from "@/lib/risk/engine";
 import { fmtVnd } from "@/lib/risk/engine";
+import { SIMULATE } from "@/lib/simulate";
 
 export interface ReceiptView {
   sub: string; username: string; decision: "approve" | "reject"; at: number; digest: string;
@@ -128,6 +129,11 @@ export function Shell({ children }: { children: React.ReactNode }) {
           )}
         </div>
       </header>
+      {SIMULATE && (
+        <div className="sim-strip">
+          <div className="wrap">Simulation mode: Tide’s network is under heavy load, so sign-in and encryption run on local stand-ins. Every server check is unchanged.</div>
+        </div>
+      )}
       <main className="wrap">
         {!isInitializing ? children : stalled ? (
           <ErrorBlock

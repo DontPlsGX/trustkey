@@ -11,12 +11,12 @@
  */
 
 import { useEffect, useState } from "react";
-import { useTideCloak } from "@tidecloak/nextjs";
+import { useTide } from "@/lib/client/tide";
 
 const DISMISS_KEY = "cungduyet.display-name.dismissed";
 
 export function ProfileOnboarding({ onSaved }: { onSaved?: () => void }) {
-  const { authenticated, getValueFromToken, getToken, getConfig, secureFetch, forceRefreshToken } = useTideCloak();
+  const { authenticated, getValueFromToken, getToken, getConfig, secureFetch, forceRefreshToken } = useTide();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);

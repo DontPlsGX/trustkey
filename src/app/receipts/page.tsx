@@ -6,8 +6,9 @@
 // evidence of a past signature, not a live session).
 import { useState } from "react";
 import { compactVerify, importJWK, EmbeddedJWK, calculateJwkThumbprint, decodeJwt, decodeProtectedHeader, type JWK } from "jose";
-import tcConfig from "../../../data/tidecloak.json";
+import tcConfig from "@tide-adapter";
 import { ErrorBlock, Loading, Shell, useFamily, money, when, type ReceiptView } from "@/components/family";
+import { SIMULATE } from "@/lib/simulate";
 
 export default function ReceiptsPage() {
   return (
@@ -34,9 +35,18 @@ const PROPOSAL_NAMES: Record<string, string> = {
 
 interface Check { label: string; ok: boolean; detail?: string }
 
-async function verifyReceipt(r: ReceiptView, expectedDigest: string, pathPrefix: string): Promise<Check[]> {
-  const out: Check[] = [];
+const REALM_LABEL = SIMULATE ? "Token signed by the realm key (simulated Tide network)" : "Token signed by the Tide network (realm key)";
+
+/** The realm's public keys. Simulation mode adds the stand-in realm key (see src/lib/simulate.ts). */
+async function realmKeys(): Promise<JWK[]> {
   const keys = (tcConfig as { jwk?: { keys: JWK[] } }).jwk?.keys ?? [];
+  if (!SIMULATE) return keys;
+  const sim = await fetch("/api/sim/jwks").then((r) => r.json());
+  return [...keys, ...(sim.keys ?? [])];
+}
+
+async function verifyReceipt(r: ReceiptView, expectedDigest: string, pathPrefix: string, keys: JWK[]): Promise<Check[]> {
+  const out: Check[] = [];
   const tokenClaims = decodeJwt(r.token) as Record<string, any>;
 
   // 1. The access token was signed by the Tide network for this realm (no single party holds that key).
@@ -44,9 +54,9 @@ async function verifyReceipt(r: ReceiptView, expectedDigest: string, pathPrefix:
     const { kid } = decodeProtectedHeader(r.token);
     const jwk = keys.find((k) => !kid || k.kid === kid) ?? keys[0];
     await compactVerify(r.token, await importJWK(jwk, jwk.alg ?? "EdDSA"));
-    out.push({ label: "Token signed by the Tide network (realm key)", ok: true, detail: `kid ${String(jwk.kid ?? "").slice(0, 10)}…` });
+    out.push({ label: REALM_LABEL, ok: true, detail: `kid ${String(jwk.kid ?? "").slice(0, 10)}…` });
   } catch (e) {
-    out.push({ label: "Token signed by the Tide network (realm key)", ok: false, detail: String(e) });
+    out.push({ label: REALM_LABEL, ok: false, detail: String(e) });
   }
   out.push({ label: `Token belongs to ${r.username}`, ok: tokenClaims.sub === r.sub, detail: `sub ${String(tokenClaims.sub).slice(0, 8)}…` });
 
@@ -102,9 +112,10 @@ function Receipts() {
 
   async function verifyAll() {
     const next: Record<string, Check[]> = {};
+    const keys = await realmKeys();
     for (const it of items) {
       const digest = await digestOf(it.fields);
-      for (const r of it.receipts) next[`${it.key}:${r.sub}`] = await verifyReceipt(r, digest, it.prefix);
+      for (const r of it.receipts) next[`${it.key}:${r.sub}`] = await verifyReceipt(r, digest, it.prefix, keys);
     }
     setResults(next);
   }
