@@ -3,7 +3,7 @@
 > RMIT Hackathon 2026 · Challenge 2 “UNLOCKED” by Tide · built on TideCloak
 
 TrustKey holds suspicious transfers from an account until 2 of 3 guardians sign in their own Tide enclaves, so no scammer can empty a lifetime of savings.
-
+[![Built with TideCloak](https://tide.org/badges/built-with-tidecloak.svg)](https://tide.org/tidecloak?utm_source=github&utm_medium=readme&utm_campaign=unlocked)
 ## 1. Vision & originality
 
 Scammers don’t hack banks. They hack people, through love and loneliness. Every current safeguard asks “is it really her?” Nobody asks “is she being manipulated?”
