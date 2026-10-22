@@ -7,7 +7,7 @@
 // or approve anything: those come from the deterministic engine and from guardians.
 import type { Assessment, TxInput } from "./engine";
 
-const MODEL = process.env.CUNGDUYET_AI_MODEL || "claude-haiku-5-5";
+const MODEL = process.env.TRUSTKEY_AI_MODEL || "claude-haiku-5-5";
 
 export async function explain(tx: TxInput, a: Assessment): Promise<{ text: string; model: string } | null> {
   const key = process.env.ANTHROPIC_API_KEY;

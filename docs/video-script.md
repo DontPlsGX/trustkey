@@ -1,6 +1,6 @@
 # Kịch bản video demo, 2:00 (quay màn hình 3 cửa sổ: Bà · Con A · Con B)
 
-Gợi ý: đặt `CUNGDUYET_DEMO_FAST=1` để thời gian chờ an toàn tính bằng giây. Thu âm lời thoại tiếng Anh, có phụ đề tiếng Việt (hoặc ngược lại). Xuất .mp4 dưới 100MB.
+Gợi ý: đặt `TRUSTKEY_DEMO_FAST=1` để thời gian chờ an toàn tính bằng giây. Thu âm lời thoại tiếng Anh, có phụ đề tiếng Việt (hoặc ngược lại). Xuất .mp4 dưới 100MB.
 
 | Thời điểm | Hình ảnh | Lời thoại (EN) |
 |---|---|---|

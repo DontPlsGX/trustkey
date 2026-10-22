@@ -6,9 +6,9 @@ import {
   tx, findFamilyFor, roleIn, historyFor, newId, newPid, transferDigest, settle, type Transfer,
 } from "@/lib/family/store";
 
-// CUNGDUYET_DEMO_FAST=1 turns cool-off minutes into seconds so a 2-minute demo video can show the
+// TRUSTKEY_DEMO_FAST=1 turns cool-off minutes into seconds so a 2-minute demo video can show the
 // whole flow. Off by default; the UI shows the real release time either way.
-const COOL_OFF_UNIT_MS = process.env.CUNGDUYET_DEMO_FAST === "1" ? 1000 : 60_000;
+const COOL_OFF_UNIT_MS = process.env.TRUSTKEY_DEMO_FAST === "1" ? 1000 : 60_000;
 
 const FLAGS: NoteFlag[] = ["fee", "task", "refund", "penalty", "deposit", "investment", "authority"];
 

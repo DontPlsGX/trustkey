@@ -10,12 +10,12 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { SignJWT, decodeJwt, exportJWK, type JWK } from "jose";
 import tcConfig from "@tide-adapter";
 
-const SESSION = "cungduyet.sim.session";
+const SESSION = "trustkey.sim.session";
 
 // ---- IndexedDB: the only place a non-extractable CryptoKey can be kept across reloads ----
 function idb<T>(mode: IDBTransactionMode, run: (s: IDBObjectStore) => IDBRequest): Promise<T> {
   return new Promise((resolve, reject) => {
-    const open = indexedDB.open("cungduyet-sim", 1);
+    const open = indexedDB.open("trustkey-sim", 1);
     open.onupgradeneeded = () => open.result.createObjectStore("keys");
     open.onerror = () => reject(open.error);
     open.onsuccess = () => {

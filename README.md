@@ -124,14 +124,14 @@ Requires Node 22+, Docker (with curl and jq) and a Tide account.
 
 ```bash
 npm install
-npm run init       # TideCloak dev container, realm "cungduyet", IGA on, prints an invite link; exports data/tidecloak.json
+npm run init       # TideCloak dev container, realm "trustkey", IGA on, prints an invite link; exports data/tidecloak.json
 npm run dev        # http://localhost:3000
 npm run test:risk  # risk-engine scenarios
 ```
 
 On Windows, run `npm run init` inside WSL2 (Ubuntu with `docker.io`, `jq`, `curl`) from the project folder.
 
-Set `CUNGDUYET_DEMO_FAST=1` to turn cool-off minutes into seconds for a short demo.
+Set `TRUSTKEY_DEMO_FAST=1` to turn cool-off minutes into seconds for a short demo.
 
 **Chrome/Edge 142+: allow Local Network Access.** Tide's sign-in page runs on a public origin (`https://ork*.tideprotocol.com`) and fetches vouchers from TideCloak on `http://localhost:8080`. Chrome blocks that public → loopback request unless the user allows it ([Local Network Access](https://developer.chrome.com/blog/local-network-access)). If sign-up fails with “Could not reach enough ORKs”, do one of these:
 

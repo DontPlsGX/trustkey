@@ -13,7 +13,7 @@
 import { useEffect, useState } from "react";
 import { useTide } from "@/lib/client/tide";
 
-const DISMISS_KEY = "cungduyet.display-name.dismissed";
+const DISMISS_KEY = "trustkey.display-name.dismissed";
 
 export function ProfileOnboarding({ onSaved }: { onSaved?: () => void }) {
   const { authenticated, getValueFromToken, getToken, getConfig, secureFetch, forceRefreshToken } = useTide();
