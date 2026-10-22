@@ -1,21 +1,71 @@
-# TrustKey: family co-signing against scams
+# TrustKey
 
 > RMIT Hackathon 2026 · Challenge 2 “UNLOCKED” by Tide · built on TideCloak
 
-## Overview
+TrustKey holds suspicious transfers from an account until 2 of 3 guardians sign in their own Tide enclaves, so no scammer can empty a lifetime of savings.
 
-**Vision & originality.** TrustKey is a family co-signing layer for an older person’s bank transfers. Everyday payments go through instantly. Risky ones wait for a family quorum, not a bank, an app admin or an AI.
+## 1. Vision & originality
 
-**Trust constraint insight.** Scams beat every one-person check. The scammer on the phone *is* the person telling grandma what to press. An admin or a fraud AI can be fooled, bribed or breached. So no single party (elder, child, admin, server or AI) can release a flagged transfer or loosen a rule alone. Tightening is one tap for anyone (freeze). Loosening needs a quorum.
+Scammers don’t hack banks. They hack people, through love and loneliness. Every current safeguard asks “is it really her?” Nobody asks “is she being manipulated?”
 
-**Value & impact.** Phone impersonation scams target older people: fake police, “holiday contract” deposits, and task scams split into small transfers. TrustKey keeps their independence for daily payments. It adds family friction only where the risk engine sees on-call pressure, a new payee, structuring, scam-pattern notes or a blacklisted account.
+We unlock a new possibility: **money no one can move alone, not even its owner.** Large transfers need two of three chosen guardians, so trust stops being a scammer’s weapon. Beyond grandparents, TrustKey protects tuition, hospital expenses, and any savings one panicked call could wipe out.
 
-**Why TideCloak matters.** Tide removes the master key twice.
-- Recipient names, accounts and notes are self-encrypted in the elder’s browser through Tide’s threshold network. The server, the AI and even the children see behaviour, never identity.
-- Every guardian vote is a Tide threshold-signed token plus a DPoP proof bound to the transfer’s digest. Anyone can verify it; the server cannot forge it.
-- The realm runs under Tide IGA, so no single admin can rewire who holds authority.
+## 2. Trust constraint insight
 
-**Prototype & storytelling.** Next.js on TideCloak: elder, guardian, governance, receipt-verifier and “what the server sees” views, five synthetic scam scenarios, and a tested risk engine. The demo follows a fake-police call from grandma’s **Send transfer** button to two children’s phones. It then opens the server’s loot (ciphertext and pseudonyms) and re-verifies every approval in the browser.
+Today, the final yes belongs to one party: a pressured elder, a greedy relative, or a bank that insiders or hackers can flip. That single point of trust is exactly what scammers exploit.
+
+An ordinary family-voting app doesn’t fix this: its operator could still approve transfers alone. Ours ensures no single party holds the final say, not even us.
+
+- No single party (elder, child, admin, server or AI) can release a flagged transfer or loosen a rule alone.
+- Tightening is one tap for anyone (freeze). Loosening needs the quorum.
+
+## 3. Value & impact
+
+Vietnamese lost 8,000+ billion ₫ to online fraud in 2025 (VTV). One grieving widow alone signed 74 contracts, nearly 20 billion ₫, to a saleswoman (Dân trí). A 23-year-old took her own life over fake loan-app fees (VietNamNet).
+
+With TrustKey, daily payments go through instantly, while large or repeated transfers to strangers wait for approval. Friction appears only where the risk engine sees:
+
+- on-call pressure;
+- a new payee;
+- structuring (many small transfers);
+- scam-pattern notes (“holding account”, deposit, task, fee…);
+- a blacklisted account.
+
+Banks and e-wallets can offer it as an opt-in: no new hardware, just three trusted people.
+
+## 4. Why TideCloak matters
+
+With ordinary login, 2 out of 3 is code its operator can skip. With TideCloak, each guardian signs in their own enclave and the realm key never exists whole.
+
+In this prototype, Tide removes the master key in four places:
+
+- **Sign-in and tokens.** Sign-in is threshold-based across Tide’s ORK network, and tokens are signed by a realm key no machine holds whole. Each token is bound to a device key the browser cannot export (DPoP).
+- **Approvals.** Every guardian vote is a Tide-signed token plus a DPoP proof bound to the transfer’s digest. Anyone can verify it; the server cannot forge it.
+- **Privacy.** Recipient names, accounts and notes are self-encrypted in the elder’s browser through Tide. The server, the AI and even the children see behaviour, never identity.
+- **Roles and admin.** Roles (`trustkey-elder`, `trustkey-guardian`) are checked on the server for every sensitive call. The realm runs under Tide IGA, so no single admin can grant themselves a role or rewire who holds authority.
+
+The full map of where TideCloak fits, and what is live or simulated, is in [docs/tidecloak-plan.md](docs/tidecloak-plan.md).
+
+## 5. Prototype & storytelling
+
+### The story
+
+A 70-year-old Hà Nội widow trusted a saleswoman who called herself her “adopted daughter”. Seventy-four contracts later, nearly 20 billion ₫ was gone (Dân trí). Grandparents rush savings to a “grandchild in trouble”; young people pay fake loan-app fees until they break. Every script ends the same way: *“don’t tell your family.”*
+
+Face biometrics prove it’s her, not that she isn’t being manipulated. TrustKey moves the final “yes” from one pressured person to the people who love her: authority emerges only when 2 of 3 of them agree.
+
+### The prototype
+
+A working Next.js app on TideCloak, with synthetic data only. The demo family is **Grandma Hoa** (protected) and three guardians: **Minh**, **Lan** and **Tuấn**.
+
+- **Elder view.** Send money with five scam scenarios built in: the vegetable seller (green), “police” on the phone, a holiday-contract deposit, a task scam split small, and a blacklisted shop.
+- **Guardian view.** See the risk signals and a pseudonym, never the name. Then *approve* after calling, or *block*. A red transfer needs 2 of 3 approvals plus a cool-off. One block stops it.
+- **Family rules.** Anyone can freeze; unfreezing, raising limits, lowering the quorum or removing a guardian needs the quorum.
+- **Receipts.** Re-verify every vote in the browser. Tick “simulate a hacked server” and the checks fail.
+- **What the server sees.** The elder’s decrypted view next to the server’s raw rows (ciphertext and pseudonyms) and the AI’s input.
+- **Risk engine.** A tested risk engine (`npm run test:risk`) plus an optional AI explainer. The AI has no vote.
+
+The demo follows a fake-police call from grandma’s **Send** button to her children’s phones. Then it opens the server’s loot and re-verifies every approval. Recording guide: [docs/video-script.md](docs/video-script.md).
 
 ---
 
