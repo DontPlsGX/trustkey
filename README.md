@@ -56,16 +56,15 @@ Face biometrics prove it’s her, not that she isn’t being manipulated. TrustK
 
 ### The prototype
 
-A working Next.js app on TideCloak, with synthetic data only. The demo family is **Grandma Hoa** (protected) and three guardians: **Minh**, **Lan** and **Tuấn**.
+A working Next.js app on TideCloak with synthetic data: Grandma Hoa (protected) and three guardians, Minh, Lan and Tuấn.
 
-- **Elder view.** Send money with five scam scenarios built in: the vegetable seller (green), “police” on the phone, a holiday-contract deposit, a task scam split small, and a blacklisted shop.
-- **Guardian view.** See the risk signals and a pseudonym, never the name. Then *approve* after calling, or *block*. A red transfer needs 2 of 3 approvals plus a cool-off. One block stops it.
-- **Family rules.** Anyone can freeze; unfreezing, raising limits, lowering the quorum or removing a guardian needs the quorum.
-- **Receipts.** Re-verify every vote in the browser. Tick “simulate a hacked server” and the checks fail.
-- **What the server sees.** The elder’s decrypted view next to the server’s raw rows (ciphertext and pseudonyms) and the AI’s input.
-- **Risk engine.** A tested risk engine (`npm run test:risk`) plus an optional AI explainer. The AI has no vote.
+- **Elder:** sends money, with five built-in scam scenarios.
+- **Guardians:** see risk signals and a pseudonym, never the name, then approve or block. A red transfer needs 2 of 3 approvals plus a cool-off, and one block stops it.
+- **Family rules:** anyone can freeze; loosening anything needs the quorum.
+- **Proof:** every vote can be re-verified in the browser, and “What the server sees” shows it holds only ciphertext and pseudonyms.
+- **Risk engine:** tested (`npm run test:risk`), with an optional AI explainer that has no vote.
 
-The demo follows a fake-police call from grandma’s **Send** button to her children’s phones. Then it opens the server’s loot and re-verifies every approval. Recording guide: [docs/video-script.md](docs/video-script.md).
+The demo follows a fake-police call from grandma’s **Send** button to her children’s phones. Recording guide: [docs/video-script.md](docs/video-script.md).
 
 ---
 
