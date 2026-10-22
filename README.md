@@ -16,33 +16,17 @@ Today, the final yes belongs to one party: a pressured elder, a greedy relative,
 
 An ordinary family-voting app doesn’t fix this: its operator could still approve transfers alone. Ours ensures no single party holds the final say, not even us.
 
-- No single party (elder, child, admin, server or AI) can release a flagged transfer or loosen a rule alone.
-- Tightening is one tap for anyone (freeze). Loosening needs the quorum.
 
 ## 3. Value & impact
 
 Vietnamese lost 8,000+ billion ₫ to online fraud in 2025 (VTV). One grieving widow alone signed 74 contracts, nearly 20 billion ₫, to a saleswoman (Dân trí). A 23-year-old took her own life over fake loan-app fees (VietNamNet).
 
-With TrustKey, daily payments go through instantly, while large or repeated transfers to strangers wait for approval. Friction appears only where the risk engine sees:
-
-- on-call pressure;
-- a new payee;
-- structuring (many small transfers);
-- scam-pattern notes (“holding account”, deposit, task, fee…);
-- a blacklisted account.
-
+With TrustKey, daily payments go through instantly, while large or repeated transfers to strangers wait for approval. 
 Banks and e-wallets can offer it as an opt-in: no new hardware, just three trusted people.
 
 ## 4. Why TideCloak matters
 
 With ordinary login, 2 out of 3 is code its operator can skip. With TideCloak, each guardian signs in their own enclave and the realm key never exists whole.
-
-In this prototype, Tide removes the master key in four places:
-
-- **Sign-in and tokens.** Sign-in is threshold-based across Tide’s ORK network, and tokens are signed by a realm key no machine holds whole. Each token is bound to a device key the browser cannot export (DPoP).
-- **Approvals.** Every guardian vote is a Tide-signed token plus a DPoP proof bound to the transfer’s digest. Anyone can verify it; the server cannot forge it.
-- **Privacy.** Recipient names, accounts and notes are self-encrypted in the elder’s browser through Tide. The server, the AI and even the children see behaviour, never identity.
-- **Roles and admin.** Roles (`trustkey-elder`, `trustkey-guardian`) are checked on the server for every sensitive call. The realm runs under Tide IGA, so no single admin can grant themselves a role or rewire who holds authority.
 
 The full map of where TideCloak fits, and what is live or simulated, is in [docs/tidecloak-plan.md](docs/tidecloak-plan.md).
 
@@ -65,8 +49,9 @@ A working Next.js app on TideCloak with synthetic data: Grandma Hoa (protected) 
 - **Risk engine:** tested (`npm run test:risk`), with an optional AI explainer that has no vote.
 
 The demo follows a fake-police call from grandma’s **Send** button to her children’s phones. Recording guide: [docs/video-script.md](docs/video-script.md).
-
 ---
+
+### SETUP
 
 ## What happens on a transfer
 
