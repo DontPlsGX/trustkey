@@ -1,4 +1,5 @@
 import { withAuthCtx, bad } from "@/lib/auth/context";
+import { requireRole } from "@/lib/auth/roles";
 import { tx, findFamilyFor, roleIn, settle } from "@/lib/family/store";
 
 // POST /api/tx/<id>/<approve|reject>/<digest>
@@ -8,6 +9,8 @@ import { tx, findFamilyFor, roleIn, settle } from "@/lib/family/store";
 // fields", not merely "guardian X made some request". A digest mismatch means the guardian was
 // shown different data than the server holds, and the vote is refused.
 export const POST = withAuthCtx(async (req, ctx) => {
+  const denied = requireRole(ctx.jwt, "guardian");
+  if (denied) return denied;
   const parts = req.nextUrl.pathname.split("/").filter(Boolean); // api, tx, id, decision, digest
   const [, , id, decision, digest] = parts;
   if (decision !== "approve" && decision !== "reject") return bad("decision must be approve|reject");

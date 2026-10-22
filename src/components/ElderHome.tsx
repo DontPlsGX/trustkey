@@ -130,7 +130,7 @@ export function ElderHome({ data, api, refresh }: { data: FamilyView; api: Api; 
             <h2>Invite your guardians</h2>
             <span className="meta">{f.guardians.length} of 5 joined</span>
           </div>
-          <p className="muted">Send this code to two to five relatives. They sign in to Cùng Duyệt with their own Tide account and enter it.</p>
+          <p className="muted">Send this code to two to five relatives. They sign in to TrustKey with their own Tide account and enter it.</p>
           <div className="invite">
             <span className="invite-code">{f.inviteCode}</span>
             <span className="small muted grow">Joined: {f.guardians.map((g) => g.username).join(", ") || "nobody yet"}</span>

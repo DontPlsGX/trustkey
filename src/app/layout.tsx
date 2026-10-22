@@ -11,7 +11,7 @@ const sans = Be_Vietnam_Pro({
 });
 
 export const metadata = {
-  title: "Cùng Duyệt (FamilyKey)",
+  title: "TrustKey",
   description: "Send money with your family behind you: AI watches for scams, and risky transfers need the family to approve. Powered by Tide.",
 };
 

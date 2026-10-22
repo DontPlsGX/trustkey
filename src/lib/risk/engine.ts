@@ -1,4 +1,4 @@
-// Risk engine for Cùng Duyệt.
+// Risk engine for TrustKey.
 //
 // Design rule: the engine sees BEHAVIOUR, never IDENTITY. Its inputs are an amount, a random
 // recipient pseudonym (R_xxxx), timing, and coarse flags the elder's browser computed locally

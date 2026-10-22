@@ -3,6 +3,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { SignJWT, calculateJwkThumbprint, type JWK } from "jose";
 import { loadTideConfig } from "./tidecloakConfig";
+import { ROLES, type AppRole } from "./roles";
 
 // Stand-in for the Tide network's realm key, used only in simulation mode (see src/lib/simulate.ts).
 // Same algorithm as the real realm (EdDSA / Ed25519), so tokens look and verify the same way. In
@@ -37,8 +38,23 @@ async function vuidFor(name: string) {
   return Array.from(new Uint8Array(buf), (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+/**
+ * The simulated realm's user directory: the role a realm admin would have granted each person
+ * (through an IGA change request on a live realm). Names not listed sign in as whichever role the
+ * demo picks, standing in for an admin provisioning a new user.
+ */
+const SIM_DIRECTORY: Record<string, AppRole> = {
+  "grandma hoa": "elder",
+  minh: "guardian",
+  lan: "guardian",
+  "tuấn": "guardian",
+};
+export function simRoleFor(name: string, requested?: unknown): AppRole {
+  return SIM_DIRECTORY[name.trim().toLowerCase()] ?? (requested === "elder" ? "elder" : "guardian");
+}
+
 /** Issue an access token bound to the caller's device key, with the claims TideCloak would put in. */
-export async function issueSimToken(name: string, deviceJwk: JWK) {
+export async function issueSimToken(name: string, deviceJwk: JWK, role: AppRole) {
   const cfg = loadTideConfig();
   const { privateJwk } = simRealmKey();
   const key = createPrivateKey({ key: privateJwk as any, format: "jwk" });
@@ -52,7 +68,10 @@ export async function issueSimToken(name: string, deviceJwk: JWK) {
     given_name: name,
     preferred_username: sub,
     scope: "openid profile",
-    realm_access: { roles: ["_tide_vault.selfencrypt", "_tide_vault.selfdecrypt"] },
+    // Tide realm defaults, the E2EE tag roles for the address book, and the app role.
+    realm_access: {
+      roles: ["_tide_enabled", "offline_access", "_tide_vault.selfencrypt", "_tide_vault.selfdecrypt", ROLES[role]],
+    },
   })
     .setProtectedHeader({ alg: "EdDSA", typ: "JWT", kid: privateJwk.kid })
     .setIssuer(`${cfg["auth-server-url"].replace(/\/+$/, "")}/realms/${cfg.realm}`)

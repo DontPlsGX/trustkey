@@ -1,4 +1,5 @@
 import { withAuthCtx, bad } from "@/lib/auth/context";
+import { requireRole } from "@/lib/auth/roles";
 import { assess, type NoteFlag, type TxInput } from "@/lib/risk/engine";
 import { explain } from "@/lib/risk/ai";
 import {
@@ -16,7 +17,9 @@ const FLAGS: NoteFlag[] = ["fee", "task", "refund", "penalty", "deposit", "inves
 // - recipientPid null means "a recipient not in my (encrypted) address book": the server mints a
 //   fresh random pseudonym and returns it, and the elder's browser files it in the address book.
 // - accountHash is sha256(bank:account), compared to the mock SIMO list. The account itself never arrives.
-export const POST = withAuthCtx(async (req, { sub, username }) => {
+export const POST = withAuthCtx(async (req, { jwt, sub, username }) => {
+  const denied = requireRole(jwt, "elder");
+  if (denied) return denied;
   const b = await req.json().catch(() => null);
   if (!b) return bad("Invalid JSON");
   const amount = Math.round(Number(b.amount));

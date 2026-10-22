@@ -108,8 +108,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
         <div className="wrap topbar-in">
           <a className="brand" href="/">
             <Mark />
-            <span className="brand-name">Cùng Duyệt</span>
-            <span className="brand-sub">FamilyKey</span>
+            <span className="brand-name">TrustKey</span>
           </a>
           {authenticated && scope && <span className="scope">{scope}</span>}
           {authenticated && (
@@ -239,8 +238,8 @@ export function Quorum({ t, guardians, me }: { t: TransferView; guardians: Perso
       </div>
       <div className="quorum-label">
         {rejected ? <strong>Blocked by a guardian</strong>
-          : left > 0 ? <><strong>Waiting on {left} {left === 1 ? "guardian" : "guardians"}</strong> · {yes} of {need} approved</>
-          : <><strong>Quorum reached</strong> · {yes} of {need} approved</>}
+          : left > 0 ? <><strong>Waiting on {left} more {left === 1 ? "guardian" : "guardians"}</strong> · {need} of {guardians.length} must approve · {yes} so far</>
+          : <><strong>Quorum reached</strong> · {yes} of {guardians.length} guardians approved</>}
         {t.status === "cooling" && t.executeAfter && <> · sends automatically at {clock(t.executeAfter)}</>}
       </div>
     </div>

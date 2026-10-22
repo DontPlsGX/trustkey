@@ -50,7 +50,7 @@ function GodView() {
         <div>
           <h1>What the server sees</h1>
           <p className="lede">
-            Left: {isElder ? "your screen" : `${elder}'s screen`} after Tide decrypts on the device. Right: exactly what the Cùng Duyệt server stores,
+            Left: {isElder ? "your screen" : `${elder}'s screen`} after Tide decrypts on the device. Right: exactly what the TrustKey server stores,
             and exactly what the AI receives. An attacker who takes over the server only gets the right column.
           </p>
         </div>

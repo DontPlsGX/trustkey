@@ -67,13 +67,13 @@ function useSimState() {
     })();
   }, []);
 
-  const signIn = useCallback(async (name: string) => {
+  const signIn = useCallback(async (name: string, role?: "elder" | "guardian") => {
     const k = (await crypto.subtle.generateKey({ name: "ECDSA", namedCurve: "P-256" }, false, ["sign", "verify"])) as CryptoKeyPair;
     const url = "/api/sim/token";
     const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json", DPoP: await proofFor(k, "POST", url) },
-      body: JSON.stringify({ name }),
+      body: JSON.stringify({ name, role }),
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || `Error ${res.status}`);

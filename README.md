@@ -1,14 +1,14 @@
-# Cùng Duyệt (FamilyKey): family co-signing against scams
+# TrustKey: family co-signing against scams
 
 > RMIT Hackathon 2026 · Challenge 2 “UNLOCKED” by Tide · built on TideCloak
 
 ## Overview
 
-**Vision & originality.** Cùng Duyệt (“approve together”) is a family co-signing layer for an older person’s bank transfers. Everyday payments go through instantly. Risky ones wait for a family quorum, not a bank, an app admin or an AI.
+**Vision & originality.** TrustKey is a family co-signing layer for an older person’s bank transfers. Everyday payments go through instantly. Risky ones wait for a family quorum, not a bank, an app admin or an AI.
 
 **Trust constraint insight.** Scams beat every one-person check. The scammer on the phone *is* the person telling grandma what to press. An admin or a fraud AI can be fooled, bribed or breached. So no single party (elder, child, admin, server or AI) can release a flagged transfer or loosen a rule alone. Tightening is one tap for anyone (freeze). Loosening needs a quorum.
 
-**Value & impact.** Phone impersonation scams target older people: fake police, “holiday contract” deposits, and task scams split into small transfers. Cùng Duyệt keeps their independence for daily payments. It adds family friction only where the risk engine sees on-call pressure, a new payee, structuring, scam-pattern notes or a blacklisted account.
+**Value & impact.** Phone impersonation scams target older people: fake police, “holiday contract” deposits, and task scams split into small transfers. TrustKey keeps their independence for daily payments. It adds family friction only where the risk engine sees on-call pressure, a new payee, structuring, scam-pattern notes or a blacklisted account.
 
 **Why TideCloak matters.** Tide removes the master key twice.
 - Recipient names, accounts and notes are self-encrypted in the elder’s browser through Tide’s threshold network. The server, the AI and even the children see behaviour, never identity.
@@ -64,6 +64,7 @@ amount, onCall   ─────────────────────
 ## Honest limits of this prototype
 
 - The TideCloak realm (roles, IdP, admin authority) is governed by **Tide IGA** with no single admin.
+- Every sensitive API checks the TideCloak realm role (`trustkey-elder` / `trustkey-guardian`) on the server, then family membership. Roles are always enforced in simulation, and on a live realm once `TRUSTKEY_ENFORCE_ROLES=1` is set after the roles are granted through IGA. See [docs/tidecloak-plan.md](docs/tidecloak-plan.md).
 - The *per-transfer* quorum count is enforced by this app’s server. Its evidence (the receipts) is cryptographic and independently verifiable at `/receipts`, including a “tampered server” simulation. Making the release itself a threshold signature would use a Tide Forseti policy contract, which is the next step.
 - The bank, the SIMO blacklist and the phone-call signal are simulated. All people, accounts and amounts are synthetic.
 
@@ -87,14 +88,27 @@ Set `CUNGDUYET_DEMO_FAST=1` to turn cool-off minutes into seconds for a short de
 - Use a normal window rather than Incognito, and click **Allow** on the “access devices on your local network” prompt.
 - Open `chrome://settings/content/siteDetails?site=https://ork1.tideprotocol.com` (Edge: `edge://settings/content/siteDetails?site=…`) and set **Local network access** to **Allow**.
 
-### Demo (three browser profiles: elder + two guardians)
+### Simulation mode (when Tide's network is under load)
+
+```bash
+NODE_OPTIONS=--max-old-space-size=3072 npm run dev:sim   # http://localhost:3000, no Docker or Tide account needed
+```
+
+Sign-in becomes a local page (`/sim-login`) where you pick a person. Each browser tab is its own person, so one window can play the whole family. A local stand-in for TideCloak issues the tokens, which carry:
+
+- realm roles: `trustkey-elder` for Grandma Hoa, `trustkey-guardian` for Minh, Lan and Tuấn;
+- a DPoP binding to a device key the browser cannot export.
+
+The server runs the same checks as with TideCloak: signature, DPoP, role, then family membership. The one honest difference is that a single local key signs every token, where Tide splits the realm key across its ORK network. For where each TideCloak feature fits, and what is live or simulated, see [docs/tidecloak-plan.md](docs/tidecloak-plan.md).
+
+### Demo (one elder + three guardians, 2 of 3 must approve)
 
 1. Elder: **Create a family** creates the family and shows an invite code.
-2. Both guardians: **Join family** with that code.
+2. All three guardians: **Join family** with that code.
 3. Elder: **Seal the guardian list** seals the guardian list.
 4. Elder: send **Pay the vegetable seller**. It is green and goes through instantly.
 5. Elder: send **“Police” on the phone**. It is red: guardians see “on a call, new recipient, ‘tạm giữ’” but not the name.
-6. Guardian A taps **I called and confirmed: approve**, then Guardian B does the same. The transfer then waits for the cool-off before release.
+6. Guardian A taps **I called and confirmed: approve**, then Guardian B does the same. Two of three is enough. The transfer then waits for the cool-off before release.
 7. Send **Task scam, split small** four times. Structuring escalates it from yellow to red.
 8. Open **What the server sees** to see the elder’s decrypted view next to the server’s raw rows and the AI’s input.
 9. Open **Receipts** and click **Verify all**: every check passes. Tick “Simulate a hacked server” and the checks fail.

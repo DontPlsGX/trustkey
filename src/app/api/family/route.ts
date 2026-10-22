@@ -1,4 +1,5 @@
 import { withAuthCtx, bad } from "@/lib/auth/context";
+import { requireRole } from "@/lib/auth/roles";
 import {
   tx, findFamilyFor, roleIn, newFamily, settle, settleProposal, newInvite, syncName,
   type Family, type Transfer, type Proposal,
@@ -48,9 +49,15 @@ export const GET = withAuthCtx(async (_req, { sub, username }) => {
 });
 
 // POST /api/family  { action: "create" | "join" | "seal" | "freeze" | "contacts", ... }
-export const POST = withAuthCtx(async (req, { sub, username }) => {
+export const POST = withAuthCtx(async (req, { jwt, sub, username }) => {
   const body = await req.json().catch(() => ({}));
   const action = body.action as string;
+  // Token role first (TideCloak says who you are), then family membership below (whose family).
+  const denied =
+    action === "create" || action === "seal" || action === "contacts" ? requireRole(jwt, "elder")
+    : action === "join" ? requireRole(jwt, "guardian")
+    : null;
+  if (denied) return denied;
   const me = { sub, username, joinedAt: Date.now() };
 
   const result = tx((s): Response => {

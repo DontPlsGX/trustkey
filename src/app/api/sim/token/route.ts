@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { EmbeddedJWK, jwtVerify, type JWK } from "jose";
 import { SIMULATE } from "@/lib/simulate";
-import { issueSimToken } from "@/lib/auth/simTide";
+import { issueSimToken, simRoleFor } from "@/lib/auth/simTide";
 import { requestHtu } from "@/lib/auth/verifyDpop";
 
 // Simulated Tide token endpoint (simulation mode only). Like TideCloak's DPoP token endpoint, it
@@ -26,5 +26,7 @@ export async function POST(req: NextRequest) {
   const name = String(body.name ?? "").trim().slice(0, 40);
   if (!name) return Response.json({ error: "Enter a name" }, { status: 400 });
 
-  return Response.json({ access_token: await issueSimToken(name, jwk), token_type: "DPoP" });
+  // The realm decides the role, not the caller: listed people get the role their admin granted.
+  const role = simRoleFor(name, body.role);
+  return Response.json({ access_token: await issueSimToken(name, jwk, role), token_type: "DPoP", role });
 }

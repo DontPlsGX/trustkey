@@ -72,7 +72,7 @@ function Landing({ onLogin }: { onLogin: () => void }) {
       <section className="hero">
         <h1>Send money as usual. The big ones, the family approves together.</h1>
         <p className="lede">
-          Cùng Duyệt keeps everyday payments instant for older parents. An AI watches for scam patterns, and a risky transfer waits
+          TrustKey keeps everyday payments instant for older parents. An AI watches for scam patterns, and a risky transfer waits
           until enough of the family says yes. No one can release it alone: not a scammer on the phone, not an admin, not the AI.
         </p>
         <button className="btn big" style={{ minWidth: 240 }} onClick={onLogin}>Sign in with Tide</button>
@@ -103,11 +103,12 @@ function Landing({ onLogin }: { onLogin: () => void }) {
         </div>
         <div className="quorum">
           <div className="quorum-faces">
-            <span className="face approve"><span className="avatar" style={tintFor(0)}>CM</span><span>Con Minh</span><span className="state">Approved</span></span>
-            <span className="face wait"><span className="avatar" style={tintFor(1)}>CH</span><span>Chị Hà</span><span className="state">Waiting</span></span>
+            <span className="face approve"><span className="avatar" style={tintFor(0)}>M</span><span>Minh</span><span className="state">Approved</span></span>
+            <span className="face wait"><span className="avatar" style={tintFor(1)}>L</span><span>Lan</span><span className="state">Waiting</span></span>
+            <span className="face wait"><span className="avatar" style={tintFor(2)}>T</span><span>Tuấn</span><span className="state">Waiting</span></span>
           </div>
           <div className="quorum-bar"><span className="on" /><span /></div>
-          <div className="quorum-label"><strong>Waiting on 1 guardian</strong> · 1 of 2 approved</div>
+          <div className="quorum-label"><strong>Waiting on 1 more guardian</strong> · 2 of 3 must approve</div>
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { withAuthCtx, bad } from "@/lib/auth/context";
+import { requireRole } from "@/lib/auth/roles";
 import { tx, findFamilyFor, roleIn, settleProposal } from "@/lib/family/store";
 
 // POST /api/proposals/<id>/<approve|reject>/<digest>
@@ -6,6 +7,8 @@ import { tx, findFamilyFor, roleIn, settleProposal } from "@/lib/family/store";
 // the proposal's digest. Only guardians vote, so a scammer who talks the elder into "removing the
 // children from the app" or "raising the limit" still needs a quorum of the children.
 export const POST = withAuthCtx(async (req, ctx) => {
+  const denied = requireRole(ctx.jwt, "guardian");
+  if (denied) return denied;
   const [, , id, decision, digest] = req.nextUrl.pathname.split("/").filter(Boolean);
   if (decision !== "approve" && decision !== "reject") return bad("decision must be approve|reject");
 

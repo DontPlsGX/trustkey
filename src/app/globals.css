@@ -1,4 +1,4 @@
-/* Cùng Duyệt: a quiet app shell. Colour sits on the data (risk, the quorum strip, money states),
+/* TrustKey: a quiet app shell. Colour sits on the data (risk, the quorum strip, money states),
    not on the chrome. Controls are large because the main user is a 70-year-old on a phone. */
 :root {
   --font: var(--font-sans), system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;

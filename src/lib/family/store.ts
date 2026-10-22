@@ -1,4 +1,4 @@
-// Server-side state for Cùng Duyệt: families, transfers, approvals, governance proposals.
+// Server-side state for TrustKey: families, transfers, approvals, governance proposals.
 //
 // What this server stores about a transfer: amount, a random recipient pseudonym, risk signals,
 // and an opaque ciphertext of the human details (recipient name, account, note) that only the

@@ -130,7 +130,7 @@ function Receipts() {
           <h1>Approval receipts</h1>
           <p className="lede">
             Each time a guardian approves, their device signs a DPoP proof tied to that exact transfer and a hash of its contents,
-            next to a token the Tide network signs together. The Cùng Duyệt server only <em>stores</em> these signatures; it cannot <em>make</em> them.
+            next to a token the Tide network signs together. The TrustKey server only <em>stores</em> these signatures; it cannot <em>make</em> them.
             This page re-checks every one in your browser.
           </p>
         </div>
