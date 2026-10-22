@@ -48,10 +48,7 @@ A working Next.js app on TideCloak with synthetic data: Grandma Hoa (protected) 
 - **Proof:** every vote can be re-verified in the browser, and “What the server sees” shows it holds only ciphertext and pseudonyms.
 - **Risk engine:** tested (`npm run test:risk`), with an optional AI explainer that has no vote.
 
-The demo follows a fake-police call from grandma’s **Send** button to her children’s phones. Recording guide: [docs/video-script.md](docs/video-script.md).
 ---
-
-### SETUP
 
 ## What happens on a transfer
 
